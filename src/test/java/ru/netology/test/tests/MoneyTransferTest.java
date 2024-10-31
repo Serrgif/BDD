@@ -39,4 +39,18 @@ class MoneyTransferTest {
         assertEquals(expectedBalanceFirstCard, BalanceFirstCard);
         assertEquals(expectedBalanceSecondCard, BalanceSecondCard);
     }
+
+    @Test
+    void InvalidTest() {
+        var firstCardBalance = dashboardPage.getCardBalance(firstCardInfo);
+        var secondCardBalance = dashboardPage.getCardBalance(secondCardInfo);
+        var amount = generateInvalidAmount(secondCardBalance);
+        var transferPage = dashboardPage.selectCardToTransfer(firstCardInfo);
+        transferPage.makeTransfer(String.valueOf(amount), secondCardInfo);
+        transferPage.findErrorMessage("На карте недостаточно средств");
+        var BalanceFirstCard = dashboardPage.getCardBalance(firstCardInfo);
+        var BalanceSecondCard = dashboardPage.getCardBalance(secondCardInfo);
+        assertEquals(firstCardBalance, BalanceFirstCard);
+        assertEquals(secondCardBalance, BalanceSecondCard);
+    }
 }

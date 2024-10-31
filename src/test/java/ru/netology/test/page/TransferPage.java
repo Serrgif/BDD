@@ -3,6 +3,9 @@ package ru.netology.test.page;
 import com.codeborne.selenide.SelenideElement;
 import ru.netology.test.data.DataHelper;
 
+import java.time.Duration;
+
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
@@ -13,6 +16,8 @@ public class TransferPage {
     private final SelenideElement fromInput = $("[data-test-id = 'from'] input");
     private final SelenideElement transferButton = $("[data-test-id = 'action-transfer']");
     private final SelenideElement transferHead = $(byText("Пополнение карты"));
+    private final SelenideElement errorMessage = $("[data-test-id = 'error-message']");
+
     public TransferPage() {
 
         transferHead.shouldBe(visible);
@@ -27,5 +32,8 @@ public class TransferPage {
         amountInput.setValue(amountToTransfer);
         fromInput.setValue(cardInfo.getCardNumber());
         transferButton.click();
+    }
+    public void findErrorMessage(String expectedText) {
+        errorMessage.shouldHave((text(expectedText)), Duration.ofSeconds(15)).shouldBe(visible);
     }
 }
